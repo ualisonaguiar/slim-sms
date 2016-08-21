@@ -13,6 +13,7 @@ class Sms
         try {
             $strQuery = '
             select
+              sms.id_sms,
               cliente.ds_nome,
               operadora.no_operadora,
               sms.nu_ddd,

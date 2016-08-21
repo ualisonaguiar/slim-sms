@@ -12,6 +12,9 @@ class EnvioSms
     {
         $smsService = new SmsService();
         $arrDataPost = array('id_cliente' => $this->getIdCliente($request));
+        if ($request->getAttribute('id_sms')) {
+            $arrDataPost['id_sms'] = $request->getAttribute('id_sms');
+        }
         try {
             return json_encode(array('data' => $smsService->listagem($arrDataPost)));
         } catch (\Exception $exception) {

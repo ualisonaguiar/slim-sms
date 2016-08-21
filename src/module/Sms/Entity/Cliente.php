@@ -8,14 +8,6 @@ class Cliente
 
     const CO_SITUACAO_CLIENTE_ATIVO = 1;
 
-    public function getClientes($arrDataPost = array())
-    {
-        $connection = self::getConection();
-        $strQuery = 'select * from tb_cliente ';
-        $arrResultDb = $connection->query($strQuery, \PDO::FETCH_ASSOC)->fetchAll();
-        return $arrResultDb;
-    }
-
     public function autenticar($strUser, $strPassword, $intTpSituacao)
     {
         $strQuery = 'select id_cliente, ds_nome, in_ativo from tb_cliente where ds_login = :ds_login and ds_password = :ds_password';

@@ -5,7 +5,5 @@ RewriteEngine On
 # absolute physical path to the directory that contains this htaccess file.
 #
 # RewriteBase /
-
-Header add Access-Control-Allow-Origin "GET, POST, PUT, DELETe"
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [QSA,L]

@@ -1,15 +1,17 @@
 <?php
 
 $retorno = "";
+$strUsuario = '';
+$strSenha = '';
 
 function curl($dados = "", $tipo = "", $meta = "", $GET = false)
 {
+    $strUrl = 'http://slim.local/enviosms';
     if ($GET && $dados) {
-        $curl = curl_init("http://localhost/enviosms/" . $dados);
-    } else {
-        $curl = curl_init("http://localhost/enviosms");
+        $strUrl .= '/' . $dados;
     }
 
+    $curl = curl_init($strUrl);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
     /* PARA METODOS POST, PUT e DELETE */
@@ -40,7 +42,8 @@ function curl($dados = "", $tipo = "", $meta = "", $GET = false)
 $dados = "";
 
 if ($_POST) {
-
+    $strUsuario = $_REQUEST['usuario'];
+    $strSenha = $_REQUEST['senha'];
     $dados = $_POST['dados'];
     switch ($_POST['metodo']) {
         case 'GET':
@@ -75,11 +78,11 @@ if ($_POST) {
             <tr>
                 <td>Usuário:</td>
                 <td><input type="text" name="usuario" autocomplete="off" required="true"
-                           value="<?php echo $_REQUEST['usuario']; ?>"></td>
+                           value="<?php echo $strUsuario; ?>"></td>
             </tr>
             <tr>
                 <td>Senha:</td>
-                <td><input type="password" name="senha" required="true" value="<?php echo $_REQUEST['senha']; ?>"></td>
+                <td><input type="password" name="senha" required="true" value="<?php echo $strSenha; ?>"></td>
             </tr>
             <tr>
                 <td valign="TOP">
@@ -101,9 +104,36 @@ if ($_POST) {
                 </td>
             </tr>
         </table>
+        <hr>
+        <p>Exemplos:</p>
+        <strong>GET</strong>
+        <p>
+            Informar o ID
+        </p>
+        <strong>POST</strong>
+        <p>
+            {
+            "from":"",
+            "to":"",
+            "text":""
+            }
+        </p>
+        <strong>PUT</strong>
+        <p>
+            {
+            "from":"",
+            "to":"",
+            "text":"",
+            "id_sms":
+            }
+        </p>
+        <strong>DELETE</strong>
+        <p>
+            {
+            "id_sms":
+            }
+        </p>
     </center>
 </form>
-
-
 </body>
 </html>

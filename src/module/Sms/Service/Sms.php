@@ -23,7 +23,7 @@ class Sms
         }
     }
 
-    public function inserir($arrDataPost)
+    public function salvar($arrDataPost)
     {
         try {
             $smsEntity = new SmEntity();
@@ -39,15 +39,44 @@ class Sms
                 'nu_ddd' => $arrInformacaoTelefone['ddd'],
                 'nu_telefone' => $arrInformacaoTelefone['telefone'],
                 'ds_mensagem' => $arrDataPost['text'],
-                'dat_cadastro' => date('Y-m-d H:i:s'),
                 'tp_situacao' => $smsEntity::CO_SITUACAO_AGUARANDO_ENVIO,
                 'ds_destinatario' => $arrDataPost['from']
             );
-            $smsEntity->insert($arrInfoSms);
+            if (array_key_exists('id_sms', $arrDataPost)) {
+                $arrInfoSms['id_sms'] = $arrDataPost['id_sms'];
+                $smsEntity->update($arrInfoSms);
+            } else {
+                $arrInfoSms['dat_cadastro'] = date('Y-m-d H:i:s');
+                $smsEntity->insert($arrInfoSms);
+            }
             $smsEntity->getConection()->commit();
             return array(
                 'status' => true,
-                'message' => 'SMS inserindo com sucesso.'
+                'message' => 'SMS salvo com sucesso.'
+            );
+        } catch (\Exception $exception) {
+            $smsEntity->getConection()->rollBack();
+            return array(
+                'status' => false,
+                'message' => $exception->getMessage()
+            );
+        }
+    }
+
+    public function excluir($arrDataPost)
+    {
+        try {
+            $smsEntity = new SmEntity();
+            $smsEntity->getConection()->beginTransaction();
+            $arrResultado = $arrSms = $this->listagem($arrDataPost);
+            if (!$arrResultado) {
+                throw new \Exception('Registro não encontrado');
+            }
+            $smsEntity->excluir($arrDataPost);
+            $smsEntity->getConection()->commit();
+            return array(
+                'status' => true,
+                'message' => 'SMS excluído com sucesso.'
             );
         } catch (\Exception $exception) {
             $smsEntity->getConection()->rollBack();

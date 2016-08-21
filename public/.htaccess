@@ -6,5 +6,6 @@ RewriteEngine On
 #
 # RewriteBase /
 
+Header add Access-Control-Allow-Origin "GET, POST, PUT, DELETe"
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [QSA,L]

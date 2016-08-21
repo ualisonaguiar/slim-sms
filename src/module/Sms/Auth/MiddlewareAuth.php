@@ -18,7 +18,9 @@ class MiddlewareAuth
             md5($arrInfoAuthorization[1])
         );
         if (!$arrResult) {
-            return $response->withStatus(401, 'Usuário/Senha inválido');
+            return $response
+                ->withStatus(403)
+                ->write('Usuário/Senha inválido');
         }
         $response = $next($request->withAttribute('id_cliente', $arrResult[0]['id_cliente']), $response);
         return $response;

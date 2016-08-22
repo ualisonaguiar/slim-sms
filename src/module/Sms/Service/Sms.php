@@ -90,6 +90,10 @@ class Sms
     protected function validaRegistro($arrData)
     {
         $arrError = array();
+        unset($arrData['id_cliente']);
+        if (!$arrData) {
+            throw new \Exception('Não foram encontrados informações sobre dados do sms.');
+        }
         foreach ($arrData as $strIndice => $strValue) {
             if (!trim($strValue) && strlen($strValue) < 2) {
                 $arrError[$strIndice];
